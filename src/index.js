@@ -63,6 +63,6 @@ const mockData = {
 };
 
 ReactDOM.render(
-  <Email data={mockData} />,
+  <Email data={mockUser} />,
   document.getElementById('root')
 );
