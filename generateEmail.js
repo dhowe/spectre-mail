@@ -132,7 +132,7 @@ function sendEmail(message, cb) {
  */
 function createEmail(user) {
   return Promise.all([
-    getFile('./src/inlined.css'),
+    getFile('./src/OceanProfile.css'),
     getFile('./template.html'),
   ])
     .then(([style, template]) => {
