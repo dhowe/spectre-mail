@@ -8,8 +8,10 @@ const Path = require('path');
 const React = require('react');
 const ReactDOMServer = require('react-dom/server');
 const OceanComp = require('./lib/OceanProfile').default;
-const StyleTag = '%STYLE%', ContentTag = '%CONTENT%';
+const { ServerStyleSheets } = require('@material-ui/core/styles');
+const StyleTag = '%STYLE%', ContentTag = '%CONTENT%', JssTag = "%JSS%";
 const DefaultSubject = 'Spectre knows about you';
+
 
 dotEnv.config();
 
@@ -140,9 +142,14 @@ function createEmail(user) {
     getFile('./template.html'),
   ])
     .then(([style, template]) => {
+      const sheets = new ServerStyleSheets();
+
       const emailElement = React.createElement(OceanComp, { subject: user });
-      const content = ReactDOMServer.renderToStaticMarkup(emailElement);
-      return template.replace(ContentTag, content).replace(StyleTag, style);
+      const content = ReactDOMServer.renderToString(sheets.collect(emailElement));
+      sheets.collect
+
+      const jss = sheets.toString();
+      return template.replace(ContentTag, content).replace(StyleTag, style).replace(JssTag, jss);
     });
 }
 
