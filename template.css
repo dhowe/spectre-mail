@@ -1,0 +1,15 @@
+body {
+  line-height: 1.2;
+  font-family: Montserrat!important;
+  color:#929391;
+}
+
+.container {
+  margin: 50px auto;
+  width:600px;
+}
+
+.OceanProfile {
+  position: relative !important;
+  width:100% !important;
+}

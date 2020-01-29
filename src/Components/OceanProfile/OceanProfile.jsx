@@ -4,6 +4,7 @@ import Typography from "@material-ui/core/Typography/Typography";
 import Grid from "@material-ui/core/Grid/Grid";
 import Slider from "@material-ui/core/Slider";
 
+import "./OceanProfile.scss";
 
 function OceanProfile(props) {
   let traits = props.subject.traits;
@@ -25,7 +26,7 @@ function OceanProfile(props) {
             </div>
             <div className="iconText">
 
-              <img src="imgs/openness.svg" alt="openness" />
+              <img src="/imgs/openness.svg" alt="openness" />
               <Typography>Openness</Typography>
             </div>
           </div>
@@ -39,7 +40,7 @@ function OceanProfile(props) {
                 </div>
             </div>
             <div className="iconText">
-            <img src="imgs/conscientiousness.svg" alt="conscientiousness" />
+            <img src="/imgs/conscientiousness.svg" alt="conscientiousness" />
               <Typography>Conscientiousness</Typography>
             </div>
           </div>
@@ -53,7 +54,7 @@ function OceanProfile(props) {
                 </div>
             </div>
             <div className="iconText">
-            <img src="imgs/extroversion.svg" alt="extraversion" />
+            <img src="/imgs/extroversion.svg" alt="extraversion" />
               <Typography>Extroversion</Typography>
             </div>
           </div>
@@ -67,7 +68,7 @@ function OceanProfile(props) {
                 </div>
             </div>
             <div className="iconText">
-            <img src="imgs/agreeableness.svg" alt="agreeableness" />
+            <img src="/imgs/agreeableness.svg" alt="agreeableness" />
               <Typography>Agreeableness</Typography>
             </div>
           </div>
@@ -81,7 +82,7 @@ function OceanProfile(props) {
                 </div>
             </div>
             <div className="iconText">
-            <img src="imgs/neuroticism.svg" alt="neuroticism" />
+            <img src="/imgs/neuroticism.svg" alt="neuroticism" />
               <Typography>Neuroticism</Typography>
             </div>
           </div>

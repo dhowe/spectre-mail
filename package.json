@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "devDependencies": {
+    "@researchgate/babel-plugin-transform-scss-import-to-string": "^1.0.0",
     "babel-cli": "^6.24.1",
     "babel-eslint": "7.0.0",
     "babel-plugin-transform-es2015-modules-commonjs": "^6.26.0",
@@ -23,13 +24,15 @@
     "date-fns": "^1.28.3",
     "dotenv": "^8.2.0",
     "html-formatter": "^0.1.9",
+    "node-sass": "^4.13.1",
     "nodemailer": "^6.4.2",
     "react": "^16.3.1",
     "react-dom": "^16.3.1"
   },
   "scripts": {
     "install": "NODE_ENV=production babel src --out-dir lib",
-    "build": "NODE_ENV=production babel src --out-dir lib && cp src/*.css lib/",
+    "commentOutScss": "find lib/Components/ -name '*.js' -print0 | xargs -0 sed -i '' 's/^require/\\/\\/&/'",
+    "build": "NODE_ENV=production babel src --out-dir lib && node-sass src/Components/ -o lib/Components && npm run commentOutScss",
     "go": "NODE_ENV=production node generateEmail.js",
     "start": "react-scripts start",
     "test": "react-scripts test --env=jsdom"
