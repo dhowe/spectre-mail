@@ -87,11 +87,6 @@
     prop-types "^15.7.2"
     react-is "^16.8.0"
 
-"@researchgate/babel-plugin-transform-scss-import-to-string@^1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@researchgate/babel-plugin-transform-scss-import-to-string/-/babel-plugin-transform-scss-import-to-string-1.0.0.tgz#5b0f61f34227fd968440423a1ec8cf2219d201c9"
-  integrity sha512-BFT8VemKR5gmKbx9LJXDOOTiBO0RYx6b6sMa/ZkA66+ZytCeB21ZT5RSb6AKqHP45mvhJ2zXYazw1wqwAs9cWg==
-
 "@types/prop-types@*":
   version "15.7.3"
   resolved "https://registry.yarnpkg.com/@types/prop-types/-/prop-types-15.7.3.tgz#2ab0d5da2e5815f94b0b9d4b95d1e5f243ab2ca7"

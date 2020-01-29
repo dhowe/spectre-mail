@@ -1,4 +1,4 @@
 {
   "presets": ["react-app"],
-  "plugins": ["@researchgate/babel-plugin-transform-scss-import-to-string", "transform-es2015-modules-commonjs"]
+  "plugins": ["transform-es2015-modules-commonjs"]
 }

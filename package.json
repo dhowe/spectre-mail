@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "private": true,
   "devDependencies": {
-    "@researchgate/babel-plugin-transform-scss-import-to-string": "^1.0.0",
     "babel-cli": "^6.24.1",
     "babel-eslint": "7.0.0",
     "babel-plugin-transform-es2015-modules-commonjs": "^6.26.0",
