@@ -3,11 +3,13 @@ const btoa = require('btoa');
 const dotEnv = require('dotenv');
 const fetch = require('node-fetch');
 const mailer = require('nodemailer');
+const formatter = require('html-formatter');
 
 const Path = require('path');
 const React = require('react');
 const ReactDOMServer = require('react-dom/server');
 const OceanComp = require('./lib/OceanProfile').default;
+const AvatarComp = require('./lib/AvatarComponent').default;
 const { ServerStyleSheets } = require('@material-ui/core/styles');
 const StyleTag = '%STYLE%', ContentTag = '%CONTENT%', JssTag = "%JSS%";
 const DefaultSubject = 'Spectre knows about you';
@@ -49,7 +51,7 @@ async function lookupUser(uid) {
   }
 }
 
-function saveEmail(email, path = 'ocean.html') {
+function saveEmail(email, path = 'output.html') {
   return new Promise((resolve, reject) => {
     fs.writeFile(path, email, (err) => {
       if (err) return reject(err);
@@ -139,22 +141,49 @@ const mockUser = {
 function createEmail(user) {
   return Promise.all([
     getFile('./src/OceanProfile.css'),
+    getFile('./src/AvatarComponent.css'),
     getFile('./template.html'),
   ])
-    .then(([style, template]) => {
-      const sheets = new ServerStyleSheets();
+    .then(([style1, style2, template]) => {
+      let sheets = new ServerStyleSheets();
 
-      const emailElement = React.createElement(OceanComp, { subject: user });
-      const content = ReactDOMServer.renderToString(sheets.collect(emailElement));
-      sheets.collect
+      // Create the OCEAN component
+      let oceanComp = React.createElement(OceanComp, { subject: user });
+      let oceanHtml = ReactDOMServer.renderToString(sheets.collect(oceanComp));
 
-      const jss = sheets.toString();
-      return template.replace(ContentTag, content).replace(StyleTag, style).replace(JssTag, jss);
+      //console.log(oceanHtml, '\n');
+
+      // Create the Avatar component
+      let avatarComp = React.createElement(AvatarComp, {
+        target: {
+          name: user.name,
+          image: '/profiles/'+user._id + '.jpg'
+        }
+      });
+      let avatarHtml = ReactDOMServer.renderToString(sheets.collect(avatarComp));
+
+      //console.log(avatarHtml, '\n');
+
+      // combine the style sheets (what if there are shared styles?)
+      let style = style1 + '\n\n' + style2;
+
+      // combine the html parts (should be one component)
+      let content = oceanHtml + '\n\n' + avatarHtml;
+
+      // replace css, jss, and content in the template
+      let html = template
+        .replace(ContentTag, content)
+        .replace(StyleTag, style)
+        .replace(JssTag, sheets.toString());
+
+      // format html and return it
+      return formatter.render(html);
     });
 }
 
 createEmail(mockUser).then(saveEmail);
-// lookupUser('888888888888888888888888')
-//   .then(createEmail)
-//   .then(saveEmail);
-  //.then(sendEmail);
+
+/*lookupUser('888888888888888888888888')
+  .then(createEmail)
+  .then(saveEmail);
+  .then(sendEmail);*/

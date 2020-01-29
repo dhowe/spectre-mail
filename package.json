@@ -22,6 +22,7 @@
     "btoa": "^1.2.1",
     "date-fns": "^1.28.3",
     "dotenv": "^8.2.0",
+    "html-formatter": "^0.1.9",
     "nodemailer": "^6.4.2",
     "react": "^16.3.1",
     "react-dom": "^16.3.1"
@@ -29,6 +30,7 @@
   "scripts": {
     "install": "NODE_ENV=production babel src --out-dir lib",
     "build": "NODE_ENV=production babel src --out-dir lib && cp src/*.css lib/",
+    "go": "NODE_ENV=production node generateEmail.js",
     "start": "react-scripts start",
     "test": "react-scripts test --env=jsdom"
   }
