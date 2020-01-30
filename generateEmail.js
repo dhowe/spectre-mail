@@ -8,10 +8,10 @@ const formatter = require('html-formatter');
 const Path = require('path');
 const React = require('react');
 const ReactDOMServer = require('react-dom/server');
-const OceanComp = require('./lib/OceanProfile').default;
-const AvatarComp = require('./lib/AvatarComponent').default;
+const OceanComp = require('./lib/Components/OceanProfile/OceanProfile').default;
+const AvatarComp = require('./lib/AvatarComponent').default; // Using a different version of AvatarComponent for now
 const { ServerStyleSheets } = require('@material-ui/core/styles');
-const StyleTag = '%STYLE%', ContentTag = '%CONTENT%', JssTag = "%JSS%";
+const StyleTag = '%STYLE%', UserNameTag = "%USERNAME%", OceanProfileTag = '%OCEANPROFILE%', JssTag = "%JSS%";
 const DefaultSubject = 'Spectre knows about you';
 
 
@@ -140,18 +140,20 @@ const mockUser = {
  */
 function createEmail(user) {
   return Promise.all([
-    getFile('./src/OceanProfile.css'),
-    getFile('./src/AvatarComponent.css'),
+    getFile('./lib/Components/OceanProfile/OceanProfile.css'),
+    getFile('./lib/Components/AvatarComponent/AvatarComponent.css'),
     getFile('./template.html'),
   ])
     .then(([style1, style2, template]) => {
-      let sheets = new ServerStyleSheets();
+      let sheet1 = new ServerStyleSheets();
 
       // Create the OCEAN component
       let oceanComp = React.createElement(OceanComp, { subject: user });
-      let oceanHtml = ReactDOMServer.renderToString(sheets.collect(oceanComp));
+      let oceanHtml = ReactDOMServer.renderToString(sheet1.collect(oceanComp));
 
       //console.log(oceanHtml, '\n');
+
+      let sheet2 = new ServerStyleSheets();
 
       // Create the Avatar component
       let avatarComp = React.createElement(AvatarComp, {
@@ -160,21 +162,33 @@ function createEmail(user) {
           image: '/profiles/'+user._id + '.jpg'
         }
       });
-      let avatarHtml = ReactDOMServer.renderToString(sheets.collect(avatarComp));
+      let avatarHtml = ReactDOMServer.renderToString(sheet2.collect(avatarComp));
 
       //console.log(avatarHtml, '\n');
 
       // combine the style sheets (what if there are shared styles?)
-      let style = style1 + '\n\n' + style2;
+      let style = style1 + '\n\n' + style2 ;
+
 
       // combine the html parts (should be one component)
-      let content = oceanHtml + '\n\n' + avatarHtml;
+      let content = avatarHtml + '\n\n' + oceanHtml;
 
       // replace css, jss, and content in the template
+
       let html = template
-        .replace(ContentTag, content)
+        .replace(UserNameTag, user.name)
+        .replace(OceanProfileTag, content)
         .replace(StyleTag, style)
-        .replace(JssTag, sheets.toString());
+        .replace(/\/imgs\//g, 'imgs/'); // TMP:fix image path
+
+      const sheets = sheet1.toString() + sheet2.toString();
+      //TODO: purge sheets and remove useless css
+      // let purgecss = new Purgecss({
+      //   content: [html],
+      //   css: ['**/*.css']
+      // })
+      // let purgecssResult = purgecss.purge()
+      html = html.replace(JssTag, sheets);
 
       // format html and return it
       return formatter.render(html);
